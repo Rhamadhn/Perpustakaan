@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
-
 class AuthController extends Controller
 {
     public function showLogin()
     {
-
         if (Auth::check()) {
-            return redirect()->route('dashboard')->with('info', 'Anda sudah login, silakan log out terlebih dahulu sebelum mengakses halaman login!');
+            return redirect()
+                ->route('dashboard')
+                ->with('info', 'Anda sudah login, silakan log out terlebih dahulu sebelum mengakses halaman login!');
         }
 
         return view('auth.login');
@@ -52,7 +52,7 @@ class AuthController extends Controller
     {
         try {
             $user = User::create([
-                'username'     => $request->username,
+                'username' => $request->username,
                 'email'    => $request->email,
                 'password' => Hash::make($request->password),
             ]);
@@ -61,7 +61,9 @@ class AuthController extends Controller
                 return back()->with('error', 'Terjadi masalah saat membuat akun. Silakan coba lagi nanti.');
             }
 
-            return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan login.');
+            return redirect()
+                ->route('login')
+                ->with('success', 'Akun berhasil dibuat! Silakan login.');
         } catch (\Exception $e) {
             Log::error('Register Error: ' . $e->getMessage());
 
@@ -71,16 +73,13 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Menghapus user dari sesi login
-        Auth::logout();
-        
-        // Menghancurkan sesi dan menghapus data sesi yang ada
-        $request->session()->invalidate();
+        if (Auth::check()) {
+            Auth::logout();
 
-        // Meregenerasi token CSRF untuk meningkatkan keamanan
-        $request->session()->regenerateToken();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
-        // Setelah logout, redirect ke halaman utama (atau halaman login jika diinginkan)
         return redirect('/');
     }
 }

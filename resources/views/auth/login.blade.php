@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="col-md-6 d-none d-md-block">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img3.webp"
+                        <img src="https://cdn.pixabay.com/photo/2015/06/13/11/28/library-807931_960_720.jpg"
                             alt="Login image" class="img-fluid h-100 w-100" style="object-fit: cover;" />
                     </div>
                 </div>

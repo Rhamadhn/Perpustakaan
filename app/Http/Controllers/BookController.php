@@ -10,8 +10,12 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
-        return view('books.index', compact('books'));
+        try {
+            $books = Book::all();
+            return view('books.index', compact('books'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal memuat daftar buku.');
+        }
     }
 
     public function create()
@@ -23,9 +27,9 @@ class BookController extends Controller
     {
         try {
             $book = Book::create([
-                'title' => $request->title,
-                'year' => $request->year,
-                'author' => $request->author,
+                'title'       => $request->title,
+                'year'        => $request->year,
+                'author'      => $request->author,
                 'description' => $request->description,
             ]);
 
@@ -39,15 +43,6 @@ class BookController extends Controller
         }
     }
 
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Book $book)
     {
         return view('books.edit', compact('book'));
@@ -56,23 +51,32 @@ class BookController extends Controller
     public function update(BookRequest $request, Book $book)
     {
         try {
-            $book->update([
-                'title' => $request->title,
-                'year' => $request->year,
-                'author' => $request->author,
+            $updated = $book->update([
+                'title'       => $request->title,
+                'year'        => $request->year,
+                'author'      => $request->author,
                 'description' => $request->description,
             ]);
 
+            if (!$updated) {
+                return back()->with('error', 'Gagal memperbarui buku.');
+            }
+
             return redirect()->route('books.index')->with('success', 'Buku berhasil diperbarui!');
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan saat memperbarui buku. Silakan coba lagi.');
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui buku.');
         }
     }
 
     public function destroy(Book $book)
     {
         try {
-            $book->delete();
+            $deleted = $book->delete();
+
+            if (!$deleted) {
+                return back()->with('error', 'Gagal menghapus buku.');
+            }
+
             return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus!');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat menghapus buku.');

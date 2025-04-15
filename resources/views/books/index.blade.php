@@ -65,7 +65,7 @@
 
 @push('scripts')
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         $('#booksTable').DataTable({
             responsive: true,
             language: {
@@ -78,7 +78,7 @@
         });
 
         document.querySelectorAll(".delete-btn").forEach(button => {
-            button.addEventListener("click", function(event) {
+            button.addEventListener("click", function (event) {
                 event.preventDefault();
                 let id = this.getAttribute("data-id");
                 let deleteUrl = "{{ route('books.destroy', ':id') }}".replace(':id', id);

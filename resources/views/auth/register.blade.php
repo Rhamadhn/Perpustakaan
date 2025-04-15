@@ -5,7 +5,7 @@
 @section('content')
     <section class="text-center">
         <div class="p-5 bg-image"
-            style="background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg'); height: 300px;">
+            style="background-image: url('https://cdn.pixabay.com/photo/2023/11/16/19/21/ai-generated-8392929_960_720.png'); height: 300px;">
         </div>
 
         <div class="card mx-4 mx-md-5 shadow-5-strong bg-body-tertiary"
